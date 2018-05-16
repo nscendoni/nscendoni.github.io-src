@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Install Python 2.7 on RHEL 6</title>
+        <link rel="stylesheet" href="http://nscendoni.github.io/theme/css/main.css" />
+        <link href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Nicola Scendoni's Notes Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://nscendoni.github.io/">Nicola Scendoni's Notes </a></h1>
+                <nav><ul>
+                    <li><a href="http://nscendoni.github.io/category/ldap.html">LDAP</a></li>
+                    <li class="active"><a href="http://nscendoni.github.io/category/linux.html">Linux</a></li>
+                    <li><a href="http://nscendoni.github.io/category/maven.html">Maven</a></li>
+                    <li><a href="http://nscendoni.github.io/category/misc.html">Misc</a></li>
+                    <li><a href="http://nscendoni.github.io/category/oracle.html">Oracle</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://nscendoni.github.io/install-python-27-on-rhel-6.html" rel="bookmark"
+           title="Permalink to Install Python 2.7 on RHEL 6">Install Python 2.7 on RHEL 6</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-12-01T10:02:00+01:00">
+                Published: sab 01 dicembre 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://nscendoni.github.io/author/nicola-scendoni.html">Nicola Scendoni</a>
+        </address>
+<p>In <a href="http://nscendoni.github.io/category/linux.html">Linux</a>.</p>
+
+</footer><!-- /.post-info -->      <p>Python 2.7 is not available in RHEL6. To install it make these steps:</p>
+<h2>Confgure yum if it was not configured:</h2>
+<div class="highlight"><pre><span></span>cat /tmp/xauth |xargs -l xauth add  
+cat &lt;&lt;EOF &gt;&gt;/etc/yum.repos.d/centos.repo
+[centos]
+name=centos
+baseurl=http://mirror.centos.org/centos-6/6/os/x86_64
+EOF
+yum makecache
+</pre></div>
+
+
+<h2>Install development tools</h2>
+<div class="highlight"><pre><span></span>yum groupinstall &quot;Development tools&quot; 
+yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel wget http://python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz 
+</pre></div>
+
+
+<h2>Download and compile:</h2>
+<div class="highlight"><pre><span></span>tar xf Python-2.7.6.tar.xz 
+cd Python-2.7.6 ./configure --prefix=/usr/local --enable-unicode=ucs4 --enable-shared LDFLAGS=&quot;-Wl,-rpath /usr/local/lib&quot; 
+make &amp;&amp; make altinstall
+</pre></div>
+
+
+<h2>Install pip</h2>
+<div class="highlight"><pre><span></span>wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py python2.7 ez_setup.py easy_install-2.7 pip
+</pre></div>
+
+
+<p>Reference: http://stackoverflow.com/questions/27115526/how-to-get-python-2-7-into-the-system-path-on-redhat-6-5-linux</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

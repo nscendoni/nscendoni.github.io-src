@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Nicola Scendoni's Notes - Misc</title><link href="http://nscendoni.github.io/" rel="alternate"></link><link href="http://nscendoni.github.io/feeds/misc.atom.xml" rel="self"></link><id>http://nscendoni.github.io/</id><updated>2017-04-06T22:05:00+02:00</updated><entry><title>Convert Markdwn to doc or pdf</title><link href="http://nscendoni.github.io/convert-markdwn-to-doc-or-pdf.html" rel="alternate"></link><published>2017-04-06T22:05:00+02:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2017-04-06:/convert-markdwn-to-doc-or-pdf.html/</id><summary type="html">&lt;ol&gt;
+&lt;li&gt;Install Pandadoc&lt;/li&gt;
+&lt;li&gt;Run:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pandoc test.md -f markdown -t docx -s -o test.docx
+&lt;/pre&gt;&lt;/div&gt;</summary></entry></feed>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Nicola Scendoni's Notes</title><link href="http://nscendoni.github.io/" rel="alternate"></link><link href="http://nscendoni.github.io/feeds/all.atom.xml" rel="self"></link><id>http://nscendoni.github.io/</id><updated>2017-04-06T22:05:00+02:00</updated><entry><title>Convert Markdwn to doc or pdf</title><link href="http://nscendoni.github.io/convert-markdwn-to-doc-or-pdf.html" rel="alternate"></link><published>2017-04-06T22:05:00+02:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2017-04-06:/convert-markdwn-to-doc-or-pdf.html/</id><summary type="html">&lt;ol&gt;
+&lt;li&gt;Install Pandadoc&lt;/li&gt;
+&lt;li&gt;Run:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pandoc test.md -f markdown -t docx -s -o test.docx
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Flashback Configuration</title><link href="http://nscendoni.github.io/flashback-configuration.html" rel="alternate"></link><published>2017-04-04T00:00:00+02:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2017-04-04:/flashback-configuration.html/</id><summary type="html">&lt;h3&gt;Enable Flashback&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sqlplus &amp;#39;/ as sysdba&amp;#39;
+ALTER DATABASE ARCHIVELOG
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;restart&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;alter system set db_recovery_file_dest=&amp;#39;/opt/dbs/oracle/MDR/flash&amp;#39; 
+alter system set db_recovery_file_dest_size=100G
+shutdown immediate;
+startup mount;
+alter database flashback on;
+-- retention here is 48 hours (values in minutes)
+alter system set db_flashback_retention_target=2880;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;restart&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;How to revert the database …&lt;/h2&gt;</summary></entry><entry><title>Setup of Maven project for OIM</title><link href="http://nscendoni.github.io/setup-of-maven-project-for-oim.html" rel="alternate"></link><published>2017-04-03T23:16:00+02:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2017-04-03:/setup-of-maven-project-for-oim.html/</id><summary type="html">&lt;ol&gt;
+&lt;li&gt;Install &amp;amp; configure Apache Maven&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;wget http://www.us.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
+export PATH=/opt/apache-maven-3.3.3/bin:$PATH
+
+vi ~/.m2/settings.xml
+&lt;span class="nt"&gt;&amp;lt;settings&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;proxies&amp;gt;&lt;/span&gt;
+     &lt;span class="nt"&gt;&amp;lt;proxy&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;id&amp;gt;&lt;/span&gt;nvs-proxy&lt;span class="nt"&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;active&amp;gt;&lt;/span&gt;true&lt;span class="nt"&gt;&amp;lt;/active&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;protocol&amp;gt;&lt;/span&gt;http&lt;span class="nt"&gt;&amp;lt;/protocol&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;host&amp;gt;&lt;/span&gt;proxy.nscendoni.net …&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Configure OUD SMTP Notifications</title><link href="http://nscendoni.github.io/configure-oud-smtp-notifications.html" rel="alternate"></link><published>2017-04-03T22:00:00+02:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2017-04-03:/configure-oud-smtp-notifications.html/</id><summary type="html">&lt;p&gt;Perform following commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;./dsconfig -h localhost -p 4444 -D &amp;quot;cn=directory manager&amp;quot; -j /tmp/pwd -X -n \
+list-alert-handlers
+
+dsconfig -h localhost -p 4444 -D &amp;quot;cn=directory manager&amp;quot; -j /tmp/pwd -X -n \
+set-global-configuration-prop --set smtp-server:localhost
+
+dsconfig -h localhost -p 4444 -D &amp;quot;cn=directory manager&amp;quot; -j /tmp/pwd -X -n …&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>How to use X11 via ssh and sudo</title><link href="http://nscendoni.github.io/how-to-use-x11-via-ssh-and-sudo.html" rel="alternate"></link><published>2015-12-04T22:00:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2015-12-04:/how-to-use-x11-via-ssh-and-sudo.html/</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;xauth&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;DISPLAY&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f2&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;.&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xauth&lt;/span&gt;
+&lt;span class="n"&gt;chmod&lt;/span&gt; &lt;span class="mi"&gt;666&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xauth&lt;/span&gt;
+&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;su&lt;/span&gt; &lt;span class="err"&gt;–&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xauth&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;xargs&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="n"&gt;xauth&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Configuring Oracle DB for EUS Authentication</title><link href="http://nscendoni.github.io/configuring-oracle-db-for-eus-authentication.html" rel="alternate"></link><published>2015-12-03T22:00:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2015-12-03:/configuring-oracle-db-for-eus-authentication.html/</id><summary type="html">&lt;ol&gt;
+&lt;li&gt;Install OUD with support for EUS
+Set Env variables and register the database:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[oracle@rhel62 ~]$ export ORACLE_HOME=/opt/oracle/product/ora/11.2.0
+[oracle@rhel62 ~]$ export PATH=$PATH:/opt/oracle/product/ora/11.2.0/bin
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Run &lt;code&gt;netca&lt;/code&gt;. Both LDAP and LDAPS ports must be specified. Anonymous bind must …&lt;/li&gt;&lt;/ol&gt;</summary></entry><entry><title>Add trusted CA to OpenLDAP client</title><link href="http://nscendoni.github.io/add-trusted-ca-to-openldap-client.html" rel="alternate"></link><published>2015-02-03T22:23:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2015-02-03:/add-trusted-ca-to-openldap-client.html/</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# cat /etc/openldap/ldap.conf
+TLS_CACERTDIR   /etc/openldap/certs
+
+# TLS_CACERTDIR=/etc/openldap/certs 
+HASH=`openssl x509 -noout -hash -in /etc/openldap/certs/cacert1.pem` 
+cd /etc/openldap/certs; ln -s cacert1.pem &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;HASH&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;.0 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Search&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ldapsearch -d &lt;span class="m"&gt;256&lt;/span&gt; -x -D &lt;span class="s2"&gt;&amp;quot;cn=directory manager&amp;quot;&lt;/span&gt; -w **** -b &lt;span class="nv"&gt;dc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;example,dc&lt;span class="o"&gt;=&lt;/span&gt;com -H …&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Enable nested virtualization on intel processors</title><link href="http://nscendoni.github.io/enable-nested-virtualization-on-intel-processors.html" rel="alternate"></link><published>2012-12-01T10:02:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2012-12-01:/enable-nested-virtualization-on-intel-processors.html/</id><summary type="html">&lt;h2&gt;Add to the kernel parameters&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;vi /etc/default/grub
+...
+kvm-intel.nested=1
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Update grub on fedora&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Reboot and check if it is enabled:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cat /sys/module/kvm_intel/parameters/nested
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Install Nexus</title><link href="http://nscendoni.github.io/install-nexus.html" rel="alternate"></link><published>2012-12-01T10:02:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2012-12-01:/install-nexus.html/</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;tar xvfz nexus-2.14.5-02-bundle.tar.gz
+cd /nexus-2.14.5-02/bin
+./nexus start
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Change the default password. The default admin/password is admin123&lt;/p&gt;
+&lt;p&gt;Source: https://dzone.com/articles/getting-started-nexus-maven&lt;/p&gt;
+&lt;h1&gt;Set pom.xml and setting.xml&lt;/h1&gt;
+&lt;p&gt;Add to pom.xml&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;    &lt;span class="nt"&gt;&amp;lt;distributionManagement&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- Publish the versioned releases here --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;repository&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;id&amp;gt;&lt;/span&gt;my-company-nexus&lt;span class="nt"&gt;&amp;lt;/id …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Install Python 2.7 on RHEL 6</title><link href="http://nscendoni.github.io/install-python-27-on-rhel-6.html" rel="alternate"></link><published>2012-12-01T10:02:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2012-12-01:/install-python-27-on-rhel-6.html/</id><summary type="html">&lt;p&gt;Python 2.7 is not available in RHEL6. To install it make these steps:&lt;/p&gt;
+&lt;h2&gt;Confgure yum if it was not configured:&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cat /tmp/xauth |xargs -l xauth add  
+cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt;/etc/yum.repos.d/centos.repo
+[centos]
+name=centos
+baseurl=http://mirror.centos.org/centos-6/6/os/x86_64
+EOF
+yum …&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Extend tablespace</title><link href="http://nscendoni.github.io/extend-tablespace.html" rel="alternate"></link><published>2012-02-03T00:12:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2012-02-03:/extend-tablespace.html/</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sqlplus / as sysdba
+select * from v$tablespace;
+
+SELECT dd.tablespace_name tablespace_name, dd.file_name file_name, dd.bytes/1024 TABLESPACE_KB, SUM(fs.bytes)/1024 KBYTES_FREE, MAX(fs.bytes)/1024 NEXT_FREE
+FROM sys.dba_free_space fs, sys.dba_data_files dd
+WHERE dd.tablespace_name = fs.tablespace_name
+AND dd.file_id = fs.file_id
+GROUP BY dd.tablespace_name, dd …&lt;/pre&gt;&lt;/div&gt;</summary></entry></feed>

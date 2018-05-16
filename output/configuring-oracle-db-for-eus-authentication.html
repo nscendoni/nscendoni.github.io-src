@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Configuring Oracle DB for EUS Authentication</title>
+        <link rel="stylesheet" href="http://nscendoni.github.io/theme/css/main.css" />
+        <link href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Nicola Scendoni's Notes Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://nscendoni.github.io/">Nicola Scendoni's Notes </a></h1>
+                <nav><ul>
+                    <li><a href="http://nscendoni.github.io/category/ldap.html">LDAP</a></li>
+                    <li><a href="http://nscendoni.github.io/category/linux.html">Linux</a></li>
+                    <li><a href="http://nscendoni.github.io/category/maven.html">Maven</a></li>
+                    <li><a href="http://nscendoni.github.io/category/misc.html">Misc</a></li>
+                    <li class="active"><a href="http://nscendoni.github.io/category/oracle.html">Oracle</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://nscendoni.github.io/configuring-oracle-db-for-eus-authentication.html" rel="bookmark"
+           title="Permalink to Configuring Oracle DB for EUS Authentication">Configuring Oracle DB for EUS Authentication</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-12-03T22:00:00+01:00">
+                Published: gio 03 dicembre 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://nscendoni.github.io/author/nicola-scendoni.html">Nicola Scendoni</a>
+        </address>
+<p>In <a href="http://nscendoni.github.io/category/oracle.html">Oracle</a>.</p>
+
+</footer><!-- /.post-info -->      <ol>
+<li>Install OUD with support for EUS
+Set Env variables and register the database:</li>
+</ol>
+<div class="highlight"><pre><span></span>[oracle@rhel62 ~]$ export ORACLE_HOME=/opt/oracle/product/ora/11.2.0
+[oracle@rhel62 ~]$ export PATH=$PATH:/opt/oracle/product/ora/11.2.0/bin
+</pre></div>
+
+
+<ol>
+<li>Run <code>netca</code>. Both LDAP and LDAPS ports must be specified. Anonymous bind must be enabled. </li>
+<li>Run <code>dbca</code>. Specify the password for the Bind User and the password for the wall that will store that password.</li>
+<li>Check that:</li>
+</ol>
+<p><code>ldap.ora</code> file is created
+<code>sqlnet.ora</code> file is created</p>
+<ol>
+<li>Create global user on Database and give some privileges:</li>
+</ol>
+<div class="highlight"><pre><span></span>[oracle@rhel62 bin]$ sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.3.0 Production on Tue Mar 24 11:48:22 2015
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.3.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+
+SQL&gt; create user test1 identified globally;
+
+User created.
+
+SQL&gt; grant create session to test1;
+
+Grant succeeded.
+
+SQL&gt; grant connect to test1;
+
+Grant succeeded.
+
+
+SQL&gt; quit
+</pre></div>
+
+
+<ol>
+<li>Create the mapping:</li>
+</ol>
+<div class="highlight"><pre><span></span>[oracle@rhel62 ~]$ eusm createMapping domain_name=OracleDefaultDomain \
+realm_dn=dc=nscendoni,dc=net ldap_host=localhost ldap_port=3389 \
+ldap_user_dn=&quot;cn=Directory Manager&quot; ldap_user_password=&quot;Welcome1&quot; \
+map_type=&quot;ENTRY&quot; map_dn=&quot;uid=scendni1,ou=People,dc=nscendoni,dc=net&quot; \
+schema=&quot;test1&quot;
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

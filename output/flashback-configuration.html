@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Flashback Configuration</title>
+        <link rel="stylesheet" href="http://nscendoni.github.io/theme/css/main.css" />
+        <link href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Nicola Scendoni's Notes Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://nscendoni.github.io/">Nicola Scendoni's Notes </a></h1>
+                <nav><ul>
+                    <li><a href="http://nscendoni.github.io/category/ldap.html">LDAP</a></li>
+                    <li><a href="http://nscendoni.github.io/category/linux.html">Linux</a></li>
+                    <li><a href="http://nscendoni.github.io/category/maven.html">Maven</a></li>
+                    <li><a href="http://nscendoni.github.io/category/misc.html">Misc</a></li>
+                    <li class="active"><a href="http://nscendoni.github.io/category/oracle.html">Oracle</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://nscendoni.github.io/flashback-configuration.html" rel="bookmark"
+           title="Permalink to Flashback Configuration">Flashback Configuration</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-04-04T00:00:00+02:00">
+                Published: mar 04 aprile 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://nscendoni.github.io/author/nicola-scendoni.html">Nicola Scendoni</a>
+        </address>
+<p>In <a href="http://nscendoni.github.io/category/oracle.html">Oracle</a>.</p>
+
+</footer><!-- /.post-info -->      <h3>Enable Flashback</h3>
+<div class="highlight"><pre><span></span>sqlplus &#39;/ as sysdba&#39;
+ALTER DATABASE ARCHIVELOG
+</pre></div>
+
+
+<p><em>restart</em></p>
+<div class="highlight"><pre><span></span>alter system set db_recovery_file_dest=&#39;/opt/dbs/oracle/MDR/flash&#39; 
+alter system set db_recovery_file_dest_size=100G
+shutdown immediate;
+startup mount;
+alter database flashback on;
+-- retention here is 48 hours (values in minutes)
+alter system set db_flashback_retention_target=2880;
+</pre></div>
+
+
+<p><em>restart</em></p>
+<h2>How to revert the database to a specific SCN Number or date</h2>
+<h3>GET SCN Number:</h3>
+<div class="highlight"><pre><span></span>Execute one of the below:
+select TO_CHAR(systimestamp) from dual;
+select systimestamp from dual;
+</pre></div>
+
+
+<h3>Flashback from SCN Number</h3>
+<div class="highlight"><pre><span></span>sqlplus / as sysdba
+SHUTDOWN IMMEDIATE;
+STARTUP MOUNT
+</pre></div>
+
+
+<p>Execute one of the below:</p>
+<div class="highlight"><pre><span></span><span class="nt">FLASHBACK</span> <span class="nt">DATABASE</span> <span class="nt">TO</span> <span class="nt">SCN</span> <span class="nt">13735378177502</span><span class="o">;</span>
+<span class="nt">FLASHBACK</span> <span class="nt">database</span> <span class="nt">TO</span> <span class="nt">TIMESTAMP</span> <span class="nt">TO_TIMESTAMP</span><span class="o">(</span><span class="s1">&#39;2014-01-15 12:00:00&#39;</span><span class="o">,</span> <span class="s1">&#39;YYYY-MM-DD HH24:MI:SS&#39;</span><span class="o">);</span>
+<span class="nt">alter</span> <span class="nt">database</span> <span class="nt">open</span> <span class="nt">resetlogs</span><span class="o">;</span>
+</pre></div>
+
+
+<h3>Create Restore Point</h3>
+<div class="highlight"><pre><span></span>sqlplus &#39;/ as sysdba&#39;
+create restore point first_restore_point;
+</pre></div>
+
+
+<h3>List Restore Point</h3>
+<div class="highlight"><pre><span></span>sqlplus &#39;/ as sysdba&#39;
+select name, time from v$restore_point;
+</pre></div>
+
+
+<h3>Restore Flashback</h3>
+<div class="highlight"><pre><span></span>stop database
+
+sqlplus &#39;/ as sysdba&#39;
+startup mount;
+flashback database to restore point first_restore_point;
+alter database open resetlogs;
+start database
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

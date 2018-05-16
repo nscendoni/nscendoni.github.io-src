@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Nicola Scendoni's Notes - Linux</title><link href="http://nscendoni.github.io/" rel="alternate"></link><link href="http://nscendoni.github.io/feeds/linux.atom.xml" rel="self"></link><id>http://nscendoni.github.io/</id><updated>2015-12-04T22:00:00+01:00</updated><entry><title>How to use X11 via ssh and sudo</title><link href="http://nscendoni.github.io/how-to-use-x11-via-ssh-and-sudo.html" rel="alternate"></link><published>2015-12-04T22:00:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2015-12-04:/how-to-use-x11-via-ssh-and-sudo.html/</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;xauth&lt;/span&gt; &lt;span class="n"&gt;list&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;echo&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;DISPLAY&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f2&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;.&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xauth&lt;/span&gt;
+&lt;span class="n"&gt;chmod&lt;/span&gt; &lt;span class="mi"&gt;666&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xauth&lt;/span&gt;
+&lt;span class="n"&gt;sudo&lt;/span&gt; &lt;span class="n"&gt;su&lt;/span&gt; &lt;span class="err"&gt;–&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;xauth&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;xargs&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="n"&gt;xauth&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt;  
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Enable nested virtualization on intel processors</title><link href="http://nscendoni.github.io/enable-nested-virtualization-on-intel-processors.html" rel="alternate"></link><published>2012-12-01T10:02:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2012-12-01:/enable-nested-virtualization-on-intel-processors.html/</id><summary type="html">&lt;h2&gt;Add to the kernel parameters&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;vi /etc/default/grub
+...
+kvm-intel.nested=1
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Update grub on fedora&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Reboot and check if it is enabled:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cat /sys/module/kvm_intel/parameters/nested
+&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Install Python 2.7 on RHEL 6</title><link href="http://nscendoni.github.io/install-python-27-on-rhel-6.html" rel="alternate"></link><published>2012-12-01T10:02:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2012-12-01:/install-python-27-on-rhel-6.html/</id><summary type="html">&lt;p&gt;Python 2.7 is not available in RHEL6. To install it make these steps:&lt;/p&gt;
+&lt;h2&gt;Confgure yum if it was not configured:&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cat /tmp/xauth |xargs -l xauth add  
+cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt;/etc/yum.repos.d/centos.repo
+[centos]
+name=centos
+baseurl=http://mirror.centos.org/centos-6/6/os/x86_64
+EOF
+yum …&lt;/pre&gt;&lt;/div&gt;</summary></entry></feed>

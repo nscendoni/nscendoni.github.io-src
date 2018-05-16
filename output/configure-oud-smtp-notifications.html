@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Configure OUD SMTP Notifications</title>
+        <link rel="stylesheet" href="http://nscendoni.github.io/theme/css/main.css" />
+        <link href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Nicola Scendoni's Notes Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://nscendoni.github.io/">Nicola Scendoni's Notes </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="http://nscendoni.github.io/category/ldap.html">LDAP</a></li>
+                    <li><a href="http://nscendoni.github.io/category/linux.html">Linux</a></li>
+                    <li><a href="http://nscendoni.github.io/category/maven.html">Maven</a></li>
+                    <li><a href="http://nscendoni.github.io/category/misc.html">Misc</a></li>
+                    <li><a href="http://nscendoni.github.io/category/oracle.html">Oracle</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://nscendoni.github.io/configure-oud-smtp-notifications.html" rel="bookmark"
+           title="Permalink to Configure OUD SMTP Notifications">Configure OUD SMTP Notifications</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-04-03T22:00:00+02:00">
+                Published: lun 03 aprile 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://nscendoni.github.io/author/nicola-scendoni.html">Nicola Scendoni</a>
+        </address>
+<p>In <a href="http://nscendoni.github.io/category/ldap.html">LDAP</a>.</p>
+
+</footer><!-- /.post-info -->      <p>Perform following commands:</p>
+<div class="highlight"><pre><span></span>./dsconfig -h localhost -p 4444 -D &quot;cn=directory manager&quot; -j /tmp/pwd -X -n \
+list-alert-handlers
+
+dsconfig -h localhost -p 4444 -D &quot;cn=directory manager&quot; -j /tmp/pwd -X -n \
+set-global-configuration-prop --set smtp-server:localhost
+
+dsconfig -h localhost -p 4444 -D &quot;cn=directory manager&quot; -j /tmp/pwd -X -n \
+create-alert-handler --handler-name &quot;my SMTP Handler&quot; --type smtp \
+--set enabled:true --set message-body:&quot;OUD Alert $HOSTNAME: %%alert-type%%
+\n\nAlert ID: %%alert-id%%\n\nAlert Message: %%alert-message%%&quot; \
+--set message-subject:&quot;$HOSTNAME OUD Alert Message&quot; \
+--set recipient-address:scendoni@gmail.com \
+--set sender-address:scendoni@gmail.com
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

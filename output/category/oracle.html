@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Nicola Scendoni's Notes - Oracle</title>
+        <link rel="stylesheet" href="http://nscendoni.github.io/theme/css/main.css" />
+        <link href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Nicola Scendoni's Notes Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://nscendoni.github.io/">Nicola Scendoni's Notes </a></h1>
+                <nav><ul>
+                    <li><a href="http://nscendoni.github.io/category/ldap.html">LDAP</a></li>
+                    <li><a href="http://nscendoni.github.io/category/linux.html">Linux</a></li>
+                    <li><a href="http://nscendoni.github.io/category/maven.html">Maven</a></li>
+                    <li><a href="http://nscendoni.github.io/category/misc.html">Misc</a></li>
+                    <li class="active"><a href="http://nscendoni.github.io/category/oracle.html">Oracle</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://nscendoni.github.io/flashback-configuration.html">Flashback Configuration</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2017-04-04T00:00:00+02:00">
+                Published: mar 04 aprile 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://nscendoni.github.io/author/nicola-scendoni.html">Nicola Scendoni</a>
+        </address>
+<p>In <a href="http://nscendoni.github.io/category/oracle.html">Oracle</a>.</p>
+
+</footer><!-- /.post-info --><h3>Enable Flashback</h3>
+<div class="highlight"><pre><span></span>sqlplus &#39;/ as sysdba&#39;
+ALTER DATABASE ARCHIVELOG
+</pre></div>
+
+
+<p><em>restart</em></p>
+<div class="highlight"><pre><span></span>alter system set db_recovery_file_dest=&#39;/opt/dbs/oracle/MDR/flash&#39; 
+alter system set db_recovery_file_dest_size=100G
+shutdown immediate;
+startup mount;
+alter database flashback on;
+-- retention here is 48 hours (values in minutes)
+alter system set db_flashback_retention_target=2880;
+</pre></div>
+
+
+<p><em>restart</em></p>
+<h2>How to revert the database to a specific SCN Number or date</h2>
+<h3>GET SCN Number:</h3>
+<div class="highlight"><pre><span></span>Execute one of the below:
+select TO_CHAR(systimestamp) from dual;
+select systimestamp from dual;
+</pre></div>
+
+
+<h3>Flashback from SCN Number</h3>
+<div class="highlight"><pre><span></span>sqlplus / as sysdba
+SHUTDOWN IMMEDIATE;
+STARTUP MOUNT
+</pre></div>
+
+
+<p>Execute one of the below:</p>
+<div class="highlight"><pre><span></span><span class="nt">FLASHBACK</span> <span class="nt">DATABASE</span> <span class="nt">TO</span> <span class="nt">SCN</span> <span class="nt">13735378177502</span><span class="o">;</span>
+<span class="nt">FLASHBACK</span> <span class="nt">database</span> <span class="nt">TO</span> <span class="nt">TIMESTAMP</span> <span class="nt">TO_TIMESTAMP</span><span class="o">(</span><span class="s1">&#39;2014-01-15 12:00:00&#39;</span><span class="o">,</span> <span class="s1">&#39;YYYY-MM-DD HH24:MI:SS&#39;</span><span class="o">);</span>
+<span class="nt">alter</span> <span class="nt">database</span> <span class="nt">open</span> <span class="nt">resetlogs</span><span class="o">;</span>
+</pre></div>
+
+
+<h3>Create Restore Point</h3>
+<div class="highlight"><pre><span></span>sqlplus &#39;/ as sysdba&#39;
+create restore point first_restore_point;
+</pre></div>
+
+
+<h3>List Restore Point</h3>
+<div class="highlight"><pre><span></span>sqlplus &#39;/ as sysdba&#39;
+select name, time from v$restore_point;
+</pre></div>
+
+
+<h3>Restore Flashback</h3>
+<div class="highlight"><pre><span></span>stop database
+
+sqlplus &#39;/ as sysdba&#39;
+startup mount;
+flashback database to restore point first_restore_point;
+alter database open resetlogs;
+start database
+</pre></div>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://nscendoni.github.io/configuring-oracle-db-for-eus-authentication.html" rel="bookmark"
+                           title="Permalink to Configuring Oracle DB for EUS Authentication">Configuring Oracle DB for EUS Authentication</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-12-03T22:00:00+01:00">
+                Published: gio 03 dicembre 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://nscendoni.github.io/author/nicola-scendoni.html">Nicola Scendoni</a>
+        </address>
+<p>In <a href="http://nscendoni.github.io/category/oracle.html">Oracle</a>.</p>
+
+</footer><!-- /.post-info -->                <ol>
+<li>Install OUD with support for EUS
+Set Env variables and register the database:</li>
+</ol>
+<div class="highlight"><pre><span></span>[oracle@rhel62 ~]$ export ORACLE_HOME=/opt/oracle/product/ora/11.2.0
+[oracle@rhel62 ~]$ export PATH=$PATH:/opt/oracle/product/ora/11.2.0/bin
+</pre></div>
+
+
+<ol>
+<li>Run <code>netca</code>. Both LDAP and LDAPS ports must be specified. Anonymous bind must …</li></ol>
+                <a class="readmore" href="http://nscendoni.github.io/configuring-oracle-db-for-eus-authentication.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://nscendoni.github.io/extend-tablespace.html" rel="bookmark"
+                           title="Permalink to Extend tablespace">Extend tablespace</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-02-03T00:12:00+01:00">
+                Published: ven 03 febbraio 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://nscendoni.github.io/author/nicola-scendoni.html">Nicola Scendoni</a>
+        </address>
+<p>In <a href="http://nscendoni.github.io/category/oracle.html">Oracle</a>.</p>
+
+</footer><!-- /.post-info -->                <div class="highlight"><pre><span></span>sqlplus / as sysdba
+select * from v$tablespace;
+
+SELECT dd.tablespace_name tablespace_name, dd.file_name file_name, dd.bytes/1024 TABLESPACE_KB, SUM(fs.bytes)/1024 KBYTES_FREE, MAX(fs.bytes)/1024 NEXT_FREE
+FROM sys.dba_free_space fs, sys.dba_data_files dd
+WHERE dd.tablespace_name = fs.tablespace_name
+AND dd.file_id = fs.file_id
+GROUP BY dd.tablespace_name, dd …</pre></div>
+                <a class="readmore" href="http://nscendoni.github.io/extend-tablespace.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

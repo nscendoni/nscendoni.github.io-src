@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Install Nexus</title>
+        <link rel="stylesheet" href="http://nscendoni.github.io/theme/css/main.css" />
+        <link href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Nicola Scendoni's Notes Atom Feed" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://nscendoni.github.io/">Nicola Scendoni's Notes </a></h1>
+                <nav><ul>
+                    <li><a href="http://nscendoni.github.io/category/ldap.html">LDAP</a></li>
+                    <li><a href="http://nscendoni.github.io/category/linux.html">Linux</a></li>
+                    <li class="active"><a href="http://nscendoni.github.io/category/maven.html">Maven</a></li>
+                    <li><a href="http://nscendoni.github.io/category/misc.html">Misc</a></li>
+                    <li><a href="http://nscendoni.github.io/category/oracle.html">Oracle</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://nscendoni.github.io/install-nexus.html" rel="bookmark"
+           title="Permalink to Install Nexus">Install Nexus</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-12-01T10:02:00+01:00">
+                Published: sab 01 dicembre 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://nscendoni.github.io/author/nicola-scendoni.html">Nicola Scendoni</a>
+        </address>
+<p>In <a href="http://nscendoni.github.io/category/maven.html">Maven</a>.</p>
+
+</footer><!-- /.post-info -->      <div class="highlight"><pre><span></span>tar xvfz nexus-2.14.5-02-bundle.tar.gz
+cd /nexus-2.14.5-02/bin
+./nexus start
+</pre></div>
+
+
+<p>Change the default password. The default admin/password is admin123</p>
+<p>Source: https://dzone.com/articles/getting-started-nexus-maven</p>
+<h1>Set pom.xml and setting.xml</h1>
+<p>Add to pom.xml</p>
+<div class="highlight"><pre><span></span>    <span class="nt">&lt;distributionManagement&gt;</span>
+        <span class="c">&lt;!-- Publish the versioned releases here --&gt;</span>
+        <span class="nt">&lt;repository&gt;</span>
+            <span class="nt">&lt;id&gt;</span>my-company-nexus<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;name&gt;</span>my-company nexus<span class="nt">&lt;/name&gt;</span>
+            <span class="nt">&lt;url&gt;</span>dav:http://localhost:8081/nexus/content/repositories/releases<span class="nt">&lt;/url&gt;</span>
+        <span class="nt">&lt;/repository&gt;</span>
+
+        <span class="c">&lt;!-- Publish the versioned releases here --&gt;</span>
+        <span class="nt">&lt;snapshotRepository&gt;</span>
+            <span class="nt">&lt;id&gt;</span>my-company-nexus<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;name&gt;</span>my-company nexus<span class="nt">&lt;/name&gt;</span>
+            <span class="nt">&lt;url&gt;</span>dav:http://localhost:8081/nexus/content/repositories/snapshots<span class="nt">&lt;/url&gt;</span>
+        <span class="nt">&lt;/snapshotRepository&gt;</span>
+    <span class="nt">&lt;/distributionManagement&gt;</span>
+
+    <span class="c">&lt;!-- download artifacts from this repo --&gt;</span>
+    <span class="nt">&lt;repositories&gt;</span>
+        <span class="nt">&lt;repository&gt;</span>
+            <span class="nt">&lt;id&gt;</span>my-company-nexus<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;name&gt;</span>my-company<span class="nt">&lt;/name&gt;</span>
+            <span class="nt">&lt;url&gt;</span>http://localhost:8081/nexus/content/groups/public<span class="nt">&lt;/url&gt;</span>
+            <span class="nt">&lt;releases&gt;</span>
+                <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
+            <span class="nt">&lt;/releases&gt;</span>
+
+            <span class="nt">&lt;snapshots&gt;</span>
+                <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
+            <span class="nt">&lt;/snapshots&gt;</span>
+        <span class="nt">&lt;/repository&gt;</span>
+    <span class="nt">&lt;/repositories&gt;</span>
+
+    <span class="c">&lt;!-- download plugins from this repo --&gt;</span>
+    <span class="nt">&lt;pluginRepositories&gt;</span>
+        <span class="nt">&lt;pluginRepository&gt;</span>
+            <span class="nt">&lt;id&gt;</span>my-company-nexus<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;name&gt;</span>my-company<span class="nt">&lt;/name&gt;</span>
+            <span class="nt">&lt;url&gt;</span>http://localhost:8001/nexus/content/groups/public<span class="nt">&lt;/url&gt;</span>
+            <span class="nt">&lt;releases&gt;</span>
+                <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
+            <span class="nt">&lt;/releases&gt;</span>
+            <span class="nt">&lt;snapshots&gt;</span>
+                <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
+            <span class="nt">&lt;/snapshots&gt;</span>
+        <span class="nt">&lt;/pluginRepository&gt;</span>
+    <span class="nt">&lt;/pluginRepositories&gt;</span>
+</pre></div>
+
+
+<p>Add under the build tag:</p>
+<div class="highlight"><pre><span></span>        <span class="nt">&lt;extensions&gt;</span>
+            <span class="nt">&lt;extension&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.apache.maven.wagon<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>wagon-webdav<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>1.0-beta-2<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/extension&gt;</span>
+        <span class="nt">&lt;/extensions&gt;</span>
+</pre></div>
+
+
+<h1>Deploy to nexus</h1>
+<p>Set the password for deployment user from nexus console and set the same in the settings.xml
+on the project to deploy tun:</p>
+<div class="highlight"><pre><span></span>mvn deploy
+</pre></div>
+
+
+<h1>Deploy third party jars to nexus</h1>
+<p>Prepare a pom.xml like:</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;project&gt;</span>
+   <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+   <span class="nt">&lt;groupId&gt;</span>oracle<span class="nt">&lt;/groupId&gt;</span>
+   <span class="nt">&lt;artifactId&gt;</span>oimclient<span class="nt">&lt;/artifactId&gt;</span>
+   <span class="nt">&lt;packaging&gt;</span>pom<span class="nt">&lt;/packaging&gt;</span>
+   <span class="nt">&lt;version&gt;</span>11.1.2<span class="nt">&lt;/version&gt;</span>
+   <span class="nt">&lt;name&gt;</span>Webdav Deployment POM<span class="nt">&lt;/name&gt;</span>
+
+   <span class="nt">&lt;build&gt;</span>
+      <span class="nt">&lt;extensions&gt;</span>
+         <span class="nt">&lt;extension&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.apache.maven.wagon<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>wagon-webdav<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>1.0-beta-2<span class="nt">&lt;/version&gt;</span>
+         <span class="nt">&lt;/extension&gt;</span>
+      <span class="nt">&lt;/extensions&gt;</span>
+   <span class="nt">&lt;/build&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
+</pre></div>
+
+
+<p>Run commands like:</p>
+<div class="highlight"><pre><span></span>mvn deploy:deploy-file -Dfile=..\..\..\..\Operation\dependency-jars\oimclient-11.1.2.jar -D-Durl=dav:http://localhost:8081/nexus/content/repositories/thirdparty -DrepositoryId=my-company-nexus -DgroupId=oracle -DartifactId=oimclient -Dversion=11.1.2 -Dpackaging=jar
+</pre></div>
+
+
+<p>Reference: [https://www.chrissearle.org/2008/02/10/Deploying_jars_to_third_party_maven_repository_via_WebDAV/]</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://nscendoni.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

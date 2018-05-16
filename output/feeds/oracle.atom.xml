@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Nicola Scendoni's Notes - Oracle</title><link href="http://nscendoni.github.io/" rel="alternate"></link><link href="http://nscendoni.github.io/feeds/oracle.atom.xml" rel="self"></link><id>http://nscendoni.github.io/</id><updated>2017-04-04T00:00:00+02:00</updated><entry><title>Flashback Configuration</title><link href="http://nscendoni.github.io/flashback-configuration.html" rel="alternate"></link><published>2017-04-04T00:00:00+02:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2017-04-04:/flashback-configuration.html/</id><summary type="html">&lt;h3&gt;Enable Flashback&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sqlplus &amp;#39;/ as sysdba&amp;#39;
+ALTER DATABASE ARCHIVELOG
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;restart&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;alter system set db_recovery_file_dest=&amp;#39;/opt/dbs/oracle/MDR/flash&amp;#39; 
+alter system set db_recovery_file_dest_size=100G
+shutdown immediate;
+startup mount;
+alter database flashback on;
+-- retention here is 48 hours (values in minutes)
+alter system set db_flashback_retention_target=2880;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;em&gt;restart&lt;/em&gt;&lt;/p&gt;
+&lt;h2&gt;How to revert the database …&lt;/h2&gt;</summary></entry><entry><title>Configuring Oracle DB for EUS Authentication</title><link href="http://nscendoni.github.io/configuring-oracle-db-for-eus-authentication.html" rel="alternate"></link><published>2015-12-03T22:00:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2015-12-03:/configuring-oracle-db-for-eus-authentication.html/</id><summary type="html">&lt;ol&gt;
+&lt;li&gt;Install OUD with support for EUS
+Set Env variables and register the database:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[oracle@rhel62 ~]$ export ORACLE_HOME=/opt/oracle/product/ora/11.2.0
+[oracle@rhel62 ~]$ export PATH=$PATH:/opt/oracle/product/ora/11.2.0/bin
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Run &lt;code&gt;netca&lt;/code&gt;. Both LDAP and LDAPS ports must be specified. Anonymous bind must …&lt;/li&gt;&lt;/ol&gt;</summary></entry><entry><title>Extend tablespace</title><link href="http://nscendoni.github.io/extend-tablespace.html" rel="alternate"></link><published>2012-02-03T00:12:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2012-02-03:/extend-tablespace.html/</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sqlplus / as sysdba
+select * from v$tablespace;
+
+SELECT dd.tablespace_name tablespace_name, dd.file_name file_name, dd.bytes/1024 TABLESPACE_KB, SUM(fs.bytes)/1024 KBYTES_FREE, MAX(fs.bytes)/1024 NEXT_FREE
+FROM sys.dba_free_space fs, sys.dba_data_files dd
+WHERE dd.tablespace_name = fs.tablespace_name
+AND dd.file_id = fs.file_id
+GROUP BY dd.tablespace_name, dd …&lt;/pre&gt;&lt;/div&gt;</summary></entry></feed>

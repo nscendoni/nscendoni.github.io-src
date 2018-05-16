@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Nicola Scendoni's Notes - LDAP</title><link href="http://nscendoni.github.io/" rel="alternate"></link><link href="http://nscendoni.github.io/feeds/ldap.atom.xml" rel="self"></link><id>http://nscendoni.github.io/</id><updated>2017-04-03T22:00:00+02:00</updated><entry><title>Configure OUD SMTP Notifications</title><link href="http://nscendoni.github.io/configure-oud-smtp-notifications.html" rel="alternate"></link><published>2017-04-03T22:00:00+02:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2017-04-03:/configure-oud-smtp-notifications.html/</id><summary type="html">&lt;p&gt;Perform following commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;./dsconfig -h localhost -p 4444 -D &amp;quot;cn=directory manager&amp;quot; -j /tmp/pwd -X -n \
+list-alert-handlers
+
+dsconfig -h localhost -p 4444 -D &amp;quot;cn=directory manager&amp;quot; -j /tmp/pwd -X -n \
+set-global-configuration-prop --set smtp-server:localhost
+
+dsconfig -h localhost -p 4444 -D &amp;quot;cn=directory manager&amp;quot; -j /tmp/pwd -X -n …&lt;/pre&gt;&lt;/div&gt;</summary></entry><entry><title>Add trusted CA to OpenLDAP client</title><link href="http://nscendoni.github.io/add-trusted-ca-to-openldap-client.html" rel="alternate"></link><published>2015-02-03T22:23:00+01:00</published><author><name>Nicola Scendoni</name></author><id>tag:nscendoni.github.io,2015-02-03:/add-trusted-ca-to-openldap-client.html/</id><summary type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# cat /etc/openldap/ldap.conf
+TLS_CACERTDIR   /etc/openldap/certs
+
+# TLS_CACERTDIR=/etc/openldap/certs 
+HASH=`openssl x509 -noout -hash -in /etc/openldap/certs/cacert1.pem` 
+cd /etc/openldap/certs; ln -s cacert1.pem &lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;HASH&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;.0 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Search&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ldapsearch -d &lt;span class="m"&gt;256&lt;/span&gt; -x -D &lt;span class="s2"&gt;&amp;quot;cn=directory manager&amp;quot;&lt;/span&gt; -w **** -b &lt;span class="nv"&gt;dc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;example,dc&lt;span class="o"&gt;=&lt;/span&gt;com -H …&lt;/pre&gt;&lt;/div&gt;</summary></entry></feed>
